@@ -23,6 +23,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import * as robotApi from '../services/robotApi';
 import { ACTION_LABELS } from '../constants/actions';
+import ActionGrid from '../components/ActionGrid';
 
 // Colores del indicador de estado según el tipo de resultado
 const STATUS_COLORS = {
@@ -217,24 +218,7 @@ export default function RobotController() {
         </View>
 
         {/* ── Acciones — reemplazar por <ActionGrid actions={actions} onAction={handleAction} loading={actions.length === 0} /> ── */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>ACCIONES</Text>
-          {actions.length === 0 ? (
-            <ActivityIndicator color="#FFA500" style={{ marginTop: 8 }} />
-          ) : (
-            <View style={styles.actionsGrid}>
-              {actions.map((action) => (
-                <Pressable
-                  key={action}
-                  style={({ pressed }) => [styles.actionBtn, pressed && styles.actionBtnPressed]}
-                  onPress={() => handleAction(action)}
-                >
-                  <Text style={styles.actionTxt}>{ACTION_LABELS[action] || action}</Text>
-                </Pressable>
-              ))}
-            </View>
-          )}
-        </View>
+        <ActionGrid actions={actions} onAction={handleAction} loading={actions.length === 0} />
 
         {/* ── Indicador de estado ── */}
         <View style={[styles.statusBar, { borderColor: STATUS_COLORS[status.type] }]}>
@@ -315,14 +299,6 @@ const styles = StyleSheet.create({
   standBtn: { backgroundColor: '#0f2d0f', borderColor: '#4CAF50' },
   sitBtn: { backgroundColor: '#2d0f0f', borderColor: '#F44336' },
   postureTxt: { color: '#fff', fontSize: 16, fontWeight: '600' },
-
-  actionsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  actionBtn: {
-    backgroundColor: '#1a1a3e', borderWidth: 1, borderColor: '#2e2e5a',
-    borderRadius: 10, paddingVertical: 10, paddingHorizontal: 14,
-  },
-  actionBtnPressed: { backgroundColor: '#2e2e7a', borderColor: '#5050cc' },
-  actionTxt: { color: '#ccc', fontSize: 14 },
 
   statusBar: {
     flexDirection: 'row', alignItems: 'center',

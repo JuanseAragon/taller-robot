@@ -14,13 +14,66 @@
 //   loading  {boolean}  - muestra un spinner mientras se cargan las acciones
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import { ACTION_LABELS } from '../constants/actions';
 
-// TODO: implementar grilla de acciones con Pressable
 export default function ActionGrid({ actions, onAction, loading }) {
   return (
-    <View>
-      <Text>ActionGrid — pendiente de implementar</Text>
+    <View style={styles.card}>
+      <Text style={styles.cardTitle}>ACCIONES</Text>
+      {loading ? (
+        <ActivityIndicator color="#FFA500" style={{ marginTop: 8 }} />
+      ) : (
+        <View style={styles.actionsGrid}>
+          {actions.map((action) => (
+            <Pressable
+              key={action}
+              style={({ pressed }) => [styles.actionBtn, pressed && styles.actionBtnPressed]}
+              onPress={() => onAction(action)}
+            >
+              <Text style={styles.actionTxt}>{ACTION_LABELS[action] || action}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#13132b',
+    borderRadius: 14,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#1e1e3a',
+  },
+  cardTitle: {
+    color: '#555',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    marginBottom: 14,
+  },
+  actionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  actionBtn: {
+    backgroundColor: '#1a1a3e',
+    borderWidth: 1,
+    borderColor: '#2e2e5a',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+  },
+  actionBtnPressed: {
+    backgroundColor: '#2e2e7a',
+    borderColor: '#5050cc',
+  },
+  actionTxt: {
+    color: '#ccc',
+    fontSize: 14,
+  },
+});
